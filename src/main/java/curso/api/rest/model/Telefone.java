@@ -1,18 +1,19 @@
 package curso.api.rest.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.ManyToAny;
 
 @Entity
-public class Usuario implements Serializable{
+public class Telefone implements Serializable {
+
 
 	private static final long serialVersionUID = 1L;
 	
@@ -20,14 +21,11 @@ public class Usuario implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private String login;
+	private String numero;
 	
-	private String senha;
-	
-	private String nome;
-	
-	@OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<Telefone> telefones = new ArrayList<Telefone>();
+	@org.hibernate.annotations.ForeignKey(name = "usuario_id")
+	@ManyToOne
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -37,38 +35,20 @@ public class Usuario implements Serializable{
 		this.id = id;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
-	public String getSenha() {
-		return senha;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	
-
-	public List<Telefone> getTelefones() {
-		return telefones;
-	}
-
-	public void setTelefones(List<Telefone> telefones) {
-		this.telefones = telefones;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
@@ -87,7 +67,7 @@ public class Usuario implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		Telefone other = (Telefone) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -95,6 +75,8 @@ public class Usuario implements Serializable{
 			return false;
 		return true;
 	}
+	
+	
 	
 	
 	
