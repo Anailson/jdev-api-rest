@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Telefone implements Serializable {
 
@@ -23,6 +25,7 @@ public class Telefone implements Serializable {
 	
 	private String numero;
 	
+	@JsonIgnore
 	@org.hibernate.annotations.ForeignKey(name = "usuario_id")
 	@ManyToOne
 	private Usuario usuario;
@@ -77,7 +80,7 @@ public class Telefone implements Serializable {
 	}
 	
 	
-	
+	//AULA - Evitando recursividade e gerando o JSON de pai e filhos
 	
 	
 
