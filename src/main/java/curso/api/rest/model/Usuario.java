@@ -2,17 +2,28 @@ package curso.api.rest.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.UniqueConstraint;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.jsf.FacesContextUtils;
 
 @Entity
-public class Usuario implements Serializable{
+public class Usuario implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -26,6 +37,33 @@ public class Usuario implements Serializable{
 	
 	private String nome;
 	
+	
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuarios_role", uniqueConstraints = @UniqueConstraint(
+	columnNames = {"usuario_id","role_id"},/*CODIGO DO USUÁRIO E DO ACESSO*/
+	name = "unique_roler_user"),
+	joinColumns = @JoinColumn(
+			name="usuario_id",
+			referencedColumnName = "id",
+			table = "usuario",
+			unique = false,
+			foreignKey = @ForeignKey(
+			name = "usuario_fk", value = ConstraintMode.CONSTRAINT)),
+	
+	inverseJoinColumns = @JoinColumn(
+			name = "role_id",
+			referencedColumnName = "id",
+			table = "role",
+			unique = false,
+			updatable = false,
+			foreignKey = @ForeignKey(
+			name ="role_fk",
+			value = ConstraintMode.CONSTRAINT)))
+	private List<Role> roles; /*PAPEIS OU ACESSOS NO SISTEMA*/
+	
+	
+	/*1 PARA MUITOS  1 USUARIO TEM MUITOS TELEFONE*/
 	@OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones = new ArrayList<Telefone>();
 
@@ -71,6 +109,51 @@ public class Usuario implements Serializable{
 		this.telefones = telefones;
 	}
 
+	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+
+       return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		
+		return this.login;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -95,8 +178,6 @@ public class Usuario implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
 	
 
 }
