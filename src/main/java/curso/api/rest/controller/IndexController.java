@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import curso.api.rest.model.Usuario;
 import curso.api.rest.repository.UsuarioRepository;
 
-@RestController
+@CrossOrigin  /*QUALQUER PARTE DO SISTEMA PODE FAZER A REQUISIÇÃO*/
+@RestController    /*ARQUITETURA REST*/
 @RequestMapping(value = "/usuario")
 public class IndexController {
 	
@@ -82,7 +84,8 @@ public class IndexController {
 		return "ok";
 	}
 	
-	
+	//AULA - Testando a API com PostMan e identificando erros
+	//REAL CONTINUAR NO PROJETO AULAS SPRING-SECURIRUT
 }
 
 
