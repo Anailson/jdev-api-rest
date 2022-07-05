@@ -30,5 +30,6 @@ public class ImplementacaoDetailsService implements UserDetailsService{
 		return new User(usuario.getLogin(),usuario.getPassword(), usuario.getAuthorities());
 	}
 	
+
 	
 }
