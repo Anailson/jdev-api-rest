@@ -1,5 +1,6 @@
 package curso.api.rest.security;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,7 @@ public class JWTTokenAutenticacaoService {
 	private static final String HEADER_STRING = "Authorization";
 	
 	/*GERANDO TOKEN DE AUTENTICAÇÃO E ADICIONANDO AO CABEÇALHO E RESPOSTA HTTP */
-	public void addAuthentication(HttpServletResponse response, String username) throws Exception {
+	public void addAuthentication(HttpServletResponse response, String username) throws IOException {
 		
 		/*MONTAGEM DO TOKEN*/
 		String JWT = Jwts.builder()/*CHAMAR O GERADOR DE TOKEN*/
@@ -84,6 +85,5 @@ public class JWTTokenAutenticacaoService {
 		return null; /*NÃO AUTORZAÇÃO*/	
 	}
 	
-
 
 }
