@@ -3,6 +3,7 @@ package curso.api.rest.security;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,7 +53,7 @@ public class JWTTokenAutenticacaoService {
 	}
 	
 	/*RETORNANDO O USUÁRIO VALIDADO COM TOKEN OU CASO NÃO SEJA VALIDO RETORNA NULL*/
-	public Authentication getAuthentication(HttpServletResponse request) {
+	public Authentication getAuthentication(HttpServletRequest request) {
 		
 		/*PEGA O TOKEN ENVIADO NO CABEÇALHO HTTP*/
 		
