@@ -75,6 +75,17 @@ public class IndexController {
 		for (int pos = 0; pos < usuario.getTelefones().size(); pos++) {
 			usuario.getTelefones().get(pos).setUsuario(usuario);
 		}
+		/*ATUALIZANDO A SENHA JWT*/
+		Usuario userTempUsuario = usuarioRepository.findUserByLogin(usuario.getLogin());
+		
+		if(!userTempUsuario.getSenha().equals(usuario.getSenha())) {//SENHA DIFERENTES
+			
+			/*CRIPTOGRANDO A SENHA DO USUÁRIO*/
+			String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
+			usuario.setSenha(senhaCriptografada);
+			
+		}
+		
 		/*OUTRAS ROTINAS ANTES DE ATUALIZAR OS REGISTROS*/
 		Usuario usuarioSalvo = usuarioRepository.save(usuario);
 		
