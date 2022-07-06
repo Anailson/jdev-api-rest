@@ -43,4 +43,5 @@ public class CursospringrestapiApplication implements WebMvcConfigurer {
 
 }
 
-/*admin admin*/
+/*admin 123*/
+
