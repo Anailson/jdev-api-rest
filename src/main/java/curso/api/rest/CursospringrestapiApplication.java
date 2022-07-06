@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -24,6 +25,9 @@ public class CursospringrestapiApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringrestapiApplication.class, args);
+		/*gerando senha cript*/
+		//System.out.println(new BCryptPasswordEncoder().encode("123"));
+		//$2a$10$rMPyE9HBNdjPMXZcBB8lHOcuJPNLW6a1q86BQ.B/y200IfLzNwFBG
 	}
 	
 	/*CROSS ORIGIN - MAPEAMENTO GLOBAL DA APLICAÇÃO*/
@@ -38,3 +42,5 @@ public class CursospringrestapiApplication implements WebMvcConfigurer {
 	
 
 }
+
+/*admin admin*/
