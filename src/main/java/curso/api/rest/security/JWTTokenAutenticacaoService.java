@@ -47,13 +47,17 @@ public class JWTTokenAutenticacaoService {
 		/*ADICIONAR NO CABEÇALHO HTTP*/
 		response.addHeader(HEADER_STRING, token); /*Authorization: Bearer ffreferergffd*/
 		
+		/*LIBERANDO RESPOSTA PARA AS PORTAS DIFERENTES QUE USAM A API OU CASO OS CLIENTES WEB EX: PORTA 8080 E PORTA 4900*/
+		liberacaoCors(response);
+		
+		
 		/*ESCREVE TOKEN COM A RESPOSTA NO CORPO DO HTTP*/
 		response.getWriter().write("{\"Authorization\": \"" +token+"\"}");
 		
 	}
 	
 	/*RETORNANDO O USUÁRIO VALIDADO COM TOKEN OU CASO NÃO SEJA VALIDO RETORNA NULL*/
-	public Authentication getAuthentication(HttpServletRequest request) {
+	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		
 		/*PEGA O TOKEN ENVIADO NO CABEÇALHO HTTP*/
 		
@@ -91,7 +95,33 @@ public class JWTTokenAutenticacaoService {
 		
 
 		}
+		
+		
+		/*LIBERAÇÃO CORS*/
+		liberacaoCors(response);
+
 		return null; /*NÃO AUTORZAÇÃO*/	
+	}
+ 
+	/*LIBERAÇÃO DO CORS MÉTODO CRIADO APÓS A liberacaoCors*/
+	private void liberacaoCors(HttpServletResponse response) {
+	
+		
+		if (response.getHeader("Access-Control-Allow-Origin") == null) {
+			response.addHeader("Access-Control-Allow-Origin","*");
+		}
+		
+		if (response.getHeader("Access-Control-Allow-Headers") == null) {
+			response.addHeader("Access-Control-Allow-Headers","*");
+		}
+		if (response.getHeader("Access-Control-Request-Headers") == null) {
+			response.addHeader("Access-Control-Request-Headers","*");
+		}
+		if (response.getHeader("Access-Control-Allow-Methods") == null) {
+			response.addHeader("Access-Control-Allow-Methods","*");
+		}
+		
+		
 	}
 	
 
