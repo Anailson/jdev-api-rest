@@ -101,8 +101,7 @@ public class IndexController {
 		return "ok";
 	}
 	
-	//AULA - Testando a API com PostMan e identificando erros
-	//REAL CONTINUAR NO PROJETO AULAS SPRING-SECURIRUT
+	
 }
 
 
