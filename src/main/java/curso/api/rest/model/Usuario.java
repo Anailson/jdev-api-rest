@@ -71,6 +71,18 @@ public class Usuario implements UserDetails{
 	/*1 PARA MUITOS  1 USUARIO TEM MUITOS TELEFONE*/
 	@OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones = new ArrayList<Telefone>();
+	
+	
+	/*ATRIBUTO PARA AUTENTICAÇÃO DO TOKEN NO BANCO*/
+	private String token = "";
+	
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	public String getToken() {
+		return token;
+	}
 
 	public Long getId() {
 		return id;

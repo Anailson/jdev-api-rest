@@ -61,9 +61,12 @@ public class JWTTokenAutenticacaoService {
 		
 		if (token != null) {
 			
+			/*TE UM TOKEN LIMO SEM ESPAÇOS exemplo: Bearer fsfdgdfgd*/
+			String tokenLimpo = token.replace(TOKEN_PREFIX,"").trim();//TRIM LIMPAR OS ESPAÇOS
+			
 			/*FAZ A VALIDAÇÃO DO TOKEN DO USUÁRIO NA REQUISIÇÃO*/
 			String user = Jwts.parser().setSigningKey(SECRET) /*Bearer frwqrwqerwe*/
-					.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))/*faeewfeferfer*/
+					.parseClaimsJws(tokenLimpo)/*faeewfeferfer*/
 					.getBody().getSubject(); /*exemplo: usuario teste*/
 			
 			if(user != null) {
@@ -71,13 +74,18 @@ public class JWTTokenAutenticacaoService {
 				Usuario usuario = ApplicationContextLoad.getApplicationContext()
 						.getBean(UsuarioRepository.class).findUserByLogin(user);
 				
-				if(user != null) {
+				if(usuario != null) {
+					
+					/*SER O TOKEN FOI IGUAL DO BANCO É VALIDADO - PASSA A VALIDAÇÃO E O ACESSO É LIBERADO*/
+					if (tokenLimpo.equals(usuario.getToken())) {
+							
 					
 					/*PADRÃO DA DOCUMENTAÇÃO SPRING*/
 					return new UsernamePasswordAuthenticationToken(
 							usuario.getLogin(),
 							usuario.getSenha(),
 							usuario.getAuthorities());
+					}
 				}
 			}
 		
