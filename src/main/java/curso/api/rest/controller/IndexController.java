@@ -1,7 +1,10 @@
 package curso.api.rest.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
 
 import curso.api.rest.model.Usuario;
 import curso.api.rest.model.UsuarioDTO;
@@ -51,12 +55,39 @@ public class IndexController {
 	}
 	/*SALVANDO OS DADOS CRIANDO NO POSTMAN*/
 	@PostMapping(value = "/", produces = "application/json")
-	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario){
+	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) throws Exception{
 		
 		/*ASSOCIANDO O OBJETO FILHO(TELEFONE) AO PAI(USUARIO)*/
 		for (int pos = 0; pos < usuario.getTelefones().size(); pos++) {
 			usuario.getTelefones().get(pos).setUsuario(usuario);
 		}
+		
+		/*CONSUMINDO API PUBLICA EXTERNA*/
+		URL url = new URL("https://viacep.com.br/ws/"+usuario.getCep()+"/json/");
+		URLConnection connection = url.openConnection();
+		InputStream is = connection.getInputStream();//DADOS DA REQUISIÇÃO QUE VEM NO CEP
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+		
+		String cep = "";
+		StringBuilder jsonCep = new StringBuilder();
+		
+		while((cep = br.readLine()) != null) {
+			jsonCep.append(cep);
+		}
+		
+	 //	System.out.println(jsonCep.toString());
+		
+		Usuario userAux = new Gson().fromJson(jsonCep.toString(), Usuario.class);
+		
+		usuario.setSenha(userAux.getCep());
+		usuario.setLogradouro(userAux.getLogradouro());
+		usuario.setComplemento(userAux.getComplemento());
+		usuario.setBairro(userAux.getBairro());
+		usuario.setLocalidade(userAux.getLocalidade());
+		usuario.setUf(userAux.getUf());
+		
+		/*CONSUMINDO API PUBLICA EXTERNA*/
+			
 		
 		/*CODIFICANDO A SENHA DOS USUÁRIOS ANTES DE SALVAR*/
 		String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
