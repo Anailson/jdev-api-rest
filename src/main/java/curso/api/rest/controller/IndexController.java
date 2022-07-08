@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import curso.api.rest.model.Usuario;
+import curso.api.rest.model.UsuarioDTO;
 import curso.api.rest.repository.UsuarioRepository;
 
 @CrossOrigin  /*QUALQUER PARTE DO SISTEMA PODE FAZER A REQUISIÇÃO*/
@@ -33,11 +34,11 @@ public class IndexController {
 	
 	/*SERVIÇO RESTFULL*/
 	@GetMapping(value = "/{id}", produces = "application/json")
-	public ResponseEntity<Usuario> init(@PathVariable(value = "id") Long id){
+	public ResponseEntity<UsuarioDTO> init(@PathVariable(value = "id") Long id){
 		
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		
-		return new ResponseEntity(usuario.get(),HttpStatus.OK);
+		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario.get()),HttpStatus.OK);
 			
 	}
 	/*LISTANDO TODOS OS ID,S*/
