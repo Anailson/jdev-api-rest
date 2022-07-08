@@ -63,6 +63,8 @@ public class JWTTokenAutenticacaoService {
 		
 		String token = request.getHeader(HEADER_STRING);
 		
+		try { //CAPTURANDO EXCEÇÃO DE TOKEN EXPIRADO
+			
 		if (token != null) {
 			
 			/*TE UM TOKEN LIMO SEM ESPAÇOS exemplo: Bearer fsfdgdfgd*/
@@ -73,6 +75,7 @@ public class JWTTokenAutenticacaoService {
 					.parseClaimsJws(tokenLimpo)/*faeewfeferfer*/
 					.getBody().getSubject(); /*exemplo: usuario teste*/
 			
+		
 			if(user != null) {
 				
 				Usuario usuario = ApplicationContextLoad.getApplicationContext()
@@ -94,9 +97,13 @@ public class JWTTokenAutenticacaoService {
 			}
 		
 
+		} //FIM DA CONDIÇÃO TOKEN
+		}catch (io.jsonwebtoken.ExpiredJwtException e) {
+			try {
+				response.getOutputStream().println("Seu TOKEN está expirado, faça seu login ou informe um novo TOKEN para autenticação");
+			}catch(IOException el) {}
 		}
-		
-		
+			
 		/*LIBERAÇÃO CORS*/
 		liberacaoCors(response);
 
