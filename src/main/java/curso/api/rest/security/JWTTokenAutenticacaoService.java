@@ -47,6 +47,11 @@ public class JWTTokenAutenticacaoService {
 		/*ADICIONAR NO CABEÇALHO HTTP*/
 		response.addHeader(HEADER_STRING, token); /*Authorization: Bearer ffreferergffd*/
 		
+		/*CHAMANDO A INSTRUÇÃO NO REPOSITORY PARA ATUALIZAÇÃO DO TOKEN NA BASE*/
+		ApplicationContextLoad.getApplicationContext()
+				.getBean(UsuarioRepository.class)
+				.atualizaTokenUser(JWT, username);  /*METODO NO REPOSITORY CRIADO*/
+	
 		/*LIBERANDO RESPOSTA PARA AS PORTAS DIFERENTES QUE USAM A API OU CASO OS CLIENTES WEB EX: PORTA 8080 E PORTA 4900*/
 		liberacaoCors(response);
 		
