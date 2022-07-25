@@ -55,6 +55,8 @@ public class JWTTokenAutenticacaoService {
 		/*LIBERANDO RESPOSTA PARA AS PORTAS DIFERENTES QUE USAM A API OU CASO OS CLIENTES WEB EX: PORTA 8080 E PORTA 4900*/
 		liberacaoCors(response);
 		
+		//response.addHeader("Access-Control-Allow-Origin", "*");
+		
 		
 		/*ESCREVE TOKEN COM A RESPOSTA NO CORPO DO HTTP*/
 		response.getWriter().write("{\"Authorization\": \"" +token+"\"}");

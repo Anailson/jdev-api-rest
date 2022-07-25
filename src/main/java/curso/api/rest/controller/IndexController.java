@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,6 +48,7 @@ public class IndexController {
 	}
 	/*LISTANDO TODOS OS ID,S*/
 	@GetMapping(value = "/", produces = "application/json")
+	@CachePut("cacheusuarios")
 	public ResponseEntity<List<Usuario>> usuario(){
 		
 		List<Usuario> list = (List<Usuario>) usuarioRepository.findAll();
@@ -131,6 +133,17 @@ public class IndexController {
 		usuarioRepository.deleteById(id);
 		
 		return "ok";
+	}
+	
+
+	/*END-POINT consulta de usuário por nome*/
+	@GetMapping(value = "/usuarioPorNome/{nome}", produces = "application/json")
+	@CachePut("cacheusuarios")
+	public ResponseEntity<List<Usuario>> usuarioPorNome (@PathVariable("nome") String nome) throws InterruptedException{
+		
+		List<Usuario> list = (List<Usuario>) usuarioRepository.findUserByNome(nome);
+		
+		return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
 	}
 	
 	

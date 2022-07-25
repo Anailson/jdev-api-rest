@@ -42,6 +42,8 @@ public class Usuario implements UserDetails{
 	
 	private String nome;
 	
+	private String cpf;
+	
 	
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -141,8 +143,18 @@ public class Usuario implements UserDetails{
 	public void setTelefones(List<Telefone> telefones) {
 		this.telefones = telefones;
 	}
+	
+	
 
 	
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
